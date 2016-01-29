@@ -1,2 +1,0 @@
-# ivy
-Ivy programming language
