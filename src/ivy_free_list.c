@@ -19,25 +19,25 @@ IVY; see the file COPYING.  If not, write to the Free Software Foundation,
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "free_list.h"
+#include "ivy_free_list.h"
 
 #define AL_MULT 128 /* No. items to allocate when free-list is empty */
 
 /* Item_size should be a valid non-empty structure size */
 
-void mk_allocator(Free_list *free_list, int item_size)
+void ivy_create_allocator(Ivy_free_list *free_list, int item_size)
 {
 	free_list->list = 0;
 	free_list->size = item_size;
 	free_list->end = item_size * AL_MULT;
 	free_list->alloc = item_size;
-	free_list->page = free_list->first_page = malloc(free_list->end);
+	free_list->page = (unsigned char  *)(free_list->first_page = malloc(free_list->end));
 	*(void **)free_list->page = 0;
 }
 
 /* Free a free list and all of the items allocated from item */
 
-void rm_allocator(Free_list *free_list)
+void ivy_free_allocator(Ivy_free_list *free_list)
 {
 	/* Free all the pages */
 	while (free_list->first_page) {
@@ -49,7 +49,7 @@ void rm_allocator(Free_list *free_list)
 
 /* Allocate a single item */
 
-void *al_item(Free_list *free_list)
+void *ivy_alloc_item(Ivy_free_list *free_list)
 {
 	void *i;
 
@@ -62,10 +62,10 @@ void *al_item(Free_list *free_list)
 	if (free_list->alloc == free_list->end) {
 		free_list->alloc = free_list->size;
 		if (!*(void **)free_list->page) {
-			free_list->page = *(void **)free_list->page = malloc(free_list->end);
+			free_list->page = (unsigned char *)(*(void **)free_list->page = malloc(free_list->end));
 			*(void **)free_list->page = 0;
 		} else {
-			free_list->page = *(void **)free_list->page;
+			free_list->page = (unsigned char *)*(void **)free_list->page;
 		}
 	}
 
@@ -77,7 +77,7 @@ void *al_item(Free_list *free_list)
 
 /* Free a single item */
 
-void fr_item(Free_list *free_list, void *item)
+void ivy_free_item(Ivy_free_list *free_list, void *item)
 {
 	*(void **)item = free_list->list;
 	free_list->list = item;
@@ -85,9 +85,9 @@ void fr_item(Free_list *free_list, void *item)
 
 /* Free all items */
 
-void fr_all(Free_list *free_list)
+void ivy_free_all(Ivy_free_list *free_list)
 {
-	free_list->page = free_list->first_page;
+	free_list->page = (unsigned char *)free_list->first_page;
 	free_list->alloc = free_list->size;
 	free_list->list = 0;
 }

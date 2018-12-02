@@ -13,36 +13,14 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
 details.  
 
+
 IVY; see the file COPYING.  If not, write to the Free Software Foundation, 
 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
-#include <string.h>
-#include "hash.h"
-#include "atom.h"
+#ifndef _Iivy_symbols
+#define _Iivy_symbols 1
 
-Hash_table *atom_table;
+char *ivy_symbol_add(const char *name);
+char *ivy_symbol_noadd(const char *name);
 
-char *atom_add(char *name)
-{
-	char *s;
-	unsigned hval;
-	if (!atom_table)
-		atom_table = htmk(1024);
-	hval = hash(name);
-	s = htfindhval(atom_table, name, hval);
-	if (!s) {
-		s = strdup(name);
-		htaddhval(atom_table, s, hval, s);
-		
-	}
-	return s;
-}
-
-char *atom_noadd(char *name)
-{
-	unsigned hval;
-	if (!atom_table)
-		atom_table = htmk(1024);
-	hval = hash(name);
-	return htfindhval(atom_table, name, hval);
-}
+#endif

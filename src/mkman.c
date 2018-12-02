@@ -9,6 +9,17 @@ struct section {
 	char *name;
 } *sections;
 
+void tolowers(char *d, char *s)
+{
+	int x;
+	for (x = 0; s[x]; ++x)
+		if (s[x] >= 'A' && s[x] <= 'Z')
+			d[x] = s[x] + 'a' - 'A';
+		else
+			d[x] = s[x];
+	d[x] = 0;
+}
+
 struct section *find_section(char *name)
 {
 	struct section *s;
@@ -26,23 +37,39 @@ struct section *find_section(char *name)
 
 int main(int argc, char *argv[])
 {
+	char lower[80];
 	char buf[1024];
 	struct section *current = 0;
 	int count = 0;
 	int line = 0;
-	printf("struct section { char *name; char *text; } sections[]=\n");
+	printf("static struct section { const char *name; const char *text; } sections[]=\n");
 	printf("{\n");
 	while(fgets(buf, sizeof(buf) - 1, stdin)) {
 		if (strlen(buf) && buf[strlen(buf) - 1] == '\n')
 			buf[strlen(buf) - 1] = 0;
 		++line;
-		if (buf[0] == '.' && buf[1] == ' ' && buf[2] >= 'a' && buf[2] <= 'z') {
+		/* if (buf[0] == '#' && buf[1] == ' ') {
 			if (current)
 				printf("  },\n");
-			current=find_section(buf + 2);
+			tolowers(lower, buf + 2);
+			current=find_section(lower);
 			++count;
-			printf("  { \"%s\",\n", buf + 2);
-		} else if (current) {
+			printf("  { \"%s\",\n", lower);
+		} else */ if (buf[0] == '#' && buf[1] == '#' && buf[2] == ' ') {
+			if (current)
+				printf("  },\n");
+			tolowers(lower, buf + 3);
+			current=find_section(lower);
+			++count;
+			printf("  { \"%s\",\n", lower);
+		} /* else if (buf[0] == '#' && buf[1] == '#' && buf[2] == '#' && buf[3] == ' ') {
+			if (current)
+				printf("  },\n");
+			tolowers(lower, buf + 4);
+			current=find_section(lower);
+			++count;
+			printf("  { \"%s\",\n", lower);
+		} */ else if (current) {
 			int x;
 			int col = 0;
 			printf("    \"");
