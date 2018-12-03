@@ -164,17 +164,6 @@ static void poploops(Ivy_frag *frag, struct ivy_looplvl *target)
 	}
 }
 
-static void poploops1(Ivy_frag *frag, struct ivy_looplvl *target)
-{
-	struct ivy_looplvl *ll;
-	for (ll = frag->looplvls->next; ll && ll != target; ll = ll->next) {
-		if (ll->what == lvlSCOPE)
-			ivy_emitc(frag, ivy_iEND);
-		else if (ll->what == lvlVALUE)
-			ivy_emitc(frag, ivy_iPOP);
-	}
-}
-
 /* Count values we would have to pop */
 
 static int countvalues(Ivy_frag *frag, struct ivy_looplvl *target)
@@ -893,31 +882,6 @@ static void gen(Ivy_error_printer *err, Ivy_frag *frag, Ivy_node * n)
 			genn(err, frag, n);
 			push_void(frag);
 		}
-	}
-}
-
-/* Generate nothing (returns true if guarenteed to branch) */
-
-static int last_is_paren(Ivy_node *n)
-{
-	if (n->what == ivy_nPAREN)
-		return 1;
-	else if (n->what == ivy_nSEMI)
-		return last_is_paren(n->r);
-	else
-		return 0;
-}
-
-static Ivy_node *extract_last_is_paren(Ivy_node *n, Ivy_node **r)
-{
-	if (n->what == ivy_nPAREN) {
-		*r = n;
-		return ivy_consempty(n->loc);
-	} else if (n->what == ivy_nSEMI) {
-		n->r = extract_last_is_paren(n->r, r);
-		return n;
-	} else {
-		return n;
 	}
 }
 

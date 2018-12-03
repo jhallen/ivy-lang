@@ -377,7 +377,7 @@ static void izkwtab(void)
 	kw_isinit = 1;
 	for (x = 0; ikwtab[x] != -1; ++x) {
 		char *s = ivy_symbol_add(ivy_what_tab[ikwtab[x]].name);
-		unsigned long hval = ivy_fib_hash(s, (64-5));
+		unsigned long hval = ivy_fib_hash(s, (IVY_PTR_SIZE-5));
 		ivy_what_tab[ikwtab[x]].name = s; /* Replace name with symbol */
 		ivy_what_tab[ikwtab[x]].next = kwhtab[hval % KWHTLEN];
 		kwhtab[hval % KWHTLEN] = &ivy_what_tab[ikwtab[x]];
@@ -393,7 +393,7 @@ static Ivy_what *kw(char *symbol)
 		return 0;
 	if (!kw_isinit)
 		izkwtab();
-	for (a = kwhtab[ivy_fib_hash(symbol, (64 - 5)) % KWHTLEN]; a; a = a->next)
+	for (a = kwhtab[ivy_fib_hash(symbol, (IVY_PTR_SIZE - 5)) % KWHTLEN]; a; a = a->next)
 		if (a->name == symbol)
 			return a;
 	return 0;

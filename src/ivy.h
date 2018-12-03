@@ -20,6 +20,7 @@ IVY; see the file COPYING.  If not, write to the Free Software Foundation,
 #ifndef _Iivy
 #define _Iivy 1
 
+#include <limits.h>
 #include "ivy_error.h"
 
 typedef struct ivy Ivy;		/* An interpreter */
@@ -200,9 +201,17 @@ void ivy_addfunc(Ivy_error_printer *err, char *name, char *argstr, void (*cfunc)
 
 /* Compute hash value of symbol address */
 
-//#define ivy_ahash(s) (((unsigned long)(s)>>3) ^ ((unsigned long)(s)>>12))
-//#define ivy_ahash(s) (((unsigned long)(s)>>3))
-#define ivy_fib_hash(s, n) (((unsigned long long)(s) * 11400714819323198485llu) >> (n))
+#if SSIZE_MAX == 2147483647
+
+#define IVY_PTR_SIZE 32
+#define ivy_fib_hash(s, n) (((size_t)(s) * 2654435769lu) >> (n))
+
+#else
+
+#define IVY_PTR_SIZE 64
+#define ivy_fib_hash(s, n) (((size_t)(s) * 11400714819323198485llu) >> (n))
+
+#endif
 
 /* A function */
 

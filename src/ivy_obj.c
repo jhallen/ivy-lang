@@ -270,8 +270,12 @@ Ivy_obj *ivy_alloc_obj(int nam_size, int str_size, int ary_size)
 	o->ary_len = 0;
 	o->ary = (Ivy_val *)calloc(o->ary_size, sizeof(Ivy_val));
 
-	o->nam_tab_shift = 64 - 2; // shift is (64 - log2(size))- what fib_hash() needs
-	o->nam_tab_mask = (1 << (64 - o->nam_tab_shift)) - 1;
+#if IVY_PTR_SIZE == 32
+	o->nam_tab_shift = IVY_PTR_SIZE - 4; // shift is (64 - log2(size))- what fib_hash() needs
+#else
+	o->nam_tab_shift = IVY_PTR_SIZE - 3; // shift is (64 - log2(size))- what fib_hash() needs
+#endif
+	o->nam_tab_mask = (1 << (IVY_PTR_SIZE - o->nam_tab_shift)) - 1;
 	o->nam_tab = (Ivy_entry *)calloc(o->nam_tab_mask + 1, sizeof(Ivy_entry));
 	o->nam_tab_count = 0;
 
