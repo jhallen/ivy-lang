@@ -39,7 +39,8 @@ embedded into other programs.
 
 Ivy uses garbage collection for memory management.
 
-Here is a tiny example program:
+Here is some example code, to give you feel for Ivy.  Here is a recursive
+function to find the nth Fibonacci number:
 
 	fn fib(n) {
 		if n < 2 {
@@ -49,12 +50,69 @@ Here is a tiny example program:
 		}
 	}
 
-Or concisely:
+It can be written more concisely as follows:
 
 	fn fib(n) if(n < 2, n, fib(n - 2) + fib(n - 1))
 
 	->print fib(30)
 	832040
+
+A much more interesting non-recursive way to implement nth-Fibonacci is to
+apply the Y-combinator to the almost-recursive definition of nth-Fibonacci. 
+See [The Y Combinator (Slight Return)](https://mvanier.livejournal.com/2897.html)
+for an explanation (it will give you a headache if you've never seen this
+before). First, here is the strict version for non-lazy languages:
+
+	fn Y(f) fn((x),x(x))(fn((x),f(fn((y),x(x)(y)))))
+
+Here is the almost-fibonacci:
+
+	fn af(f) fn((n),if(n<2,n,f(n-1)+f(n-2)))
+
+Now we create the nth-Fibonacci function:
+
+	->fib=Y(af)
+	->print fib(10)
+	55
+
+Ivy supports lazy evaluation of arguments, so we can also use the
+normal-order Y-combinator:
+
+	fn Y(f) {
+        	fn inner(z) f(z(z))
+        	inner(inner)
+	}
+
+We just have to indicate which arguments are to be evaluated lazily:
+
+	fn af(&f) fn((n),if(n<2,n,(*f)(n-1)+(*f)(n-2)))
+
+	->fib=Y(af)
+	->print fib(10)
+	55
+
+As a final example, here is Donald Knuth's "Man or Boy" test for the Algol
+60 language:
+
+	fn A(k, &x1, &x2, &x3, &x4, &x5) {e
+	        fn B() {
+	                k = k - 1
+	                return A(k, B(), *x1, *x2, *x3, *x4)
+	        }
+	        if k <= 0 {
+	                return *x4 + *x5
+	        } {
+	                return B()
+	        }
+	}
+
+	->print A(10, 1, -1, -1, 1, 0)
+	-67
+
+This is a particularly clean implementation, almost as clean as the Algol 60
+original.  Take a look here for various version of it:
+
+	[https://rosettacode.org/wiki/Man_or_boy_test](https://rosettacode.org/wiki/Man_or_boy_test)
 
 ## Invocation
 
