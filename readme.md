@@ -370,9 +370,10 @@ When arrays are created all at once, the first item will be at index 0:
 	->
 
 Auto-expanding hash tables are used for symbol and string indexing.  These
-hash tables expand to twice their size when they reach half full.  Symbol
+hash tables expand to remain efficient as items are added to it.  Symbol
 indexing is faster than string indexing since, for symbols, the hash value
-is just the address of the symbol.
+is just the address of the symbol so the hash value does not have to be
+recomputed or even looked up.
 
 Objects can be created either member by member:
 
