@@ -112,7 +112,7 @@ As a final example, here is Donald Knuth's "Man or Boy" test for the Algol
 This is a particularly clean implementation, almost as clean as the Algol 60
 original.  Take a look here for various version of it:
 
-	[https://rosettacode.org/wiki/Man_or_boy_test](https://rosettacode.org/wiki/Man_or_boy_test)
+[https://rosettacode.org/wiki/Man_or_boy_test](https://rosettacode.org/wiki/Man_or_boy_test)
 
 ## Invocation
 
