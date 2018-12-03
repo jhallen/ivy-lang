@@ -91,10 +91,10 @@ We just have to indicate which arguments are to be evaluated lazily:
 	->print fib(10)
 	55
 
-As a final example, here is Donald Knuth's "Man or Boy" test for the Algol
+As a final example, here is Donald Knuth's "Man or Boy" test for the ALGOL
 60 language:
 
-	fn A(k, &x1, &x2, &x3, &x4, &x5) {e
+	fn A(k, &x1, &x2, &x3, &x4, &x5) {
 	        fn B() {
 	                k = k - 1
 	                return A(k, B(), *x1, *x2, *x3, *x4)
@@ -109,10 +109,12 @@ As a final example, here is Donald Knuth's "Man or Boy" test for the Algol
 	->print A(10, 1, -1, -1, 1, 0)
 	-67
 
-This is a particularly clean implementation, almost as clean as the Algol 60
-original.  Take a look here for various version of it:
+This is a particularly clean implementation, almost as clean as the ALGOL 60
+original.  Languages that really support it have no need to adorn the
+arguments in the call to A.  Take a look here for various versions of it:
 
 [https://rosettacode.org/wiki/Man_or_boy_test](https://rosettacode.org/wiki/Man_or_boy_test)
+
 
 ## Invocation
 
