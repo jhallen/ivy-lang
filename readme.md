@@ -1486,8 +1486,8 @@ it may be later called by derived class constructors:
 
 Now we create some instances of the class:
 
-	instance_1 = My_class.construct()
-	instance_2 = My_class.construct()
+	instance_1 = My_class.instance()
+	instance_2 = My_class.instance()
 
 The instances are now ready and we can call their member functions:
 
