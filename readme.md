@@ -465,7 +465,7 @@ There is an operator to do this directly:
 
 	modified = original::new_environment
 
-ALso, when a closure is retrieved from an object with a member called *mom* via dot
+Also, when a closure is retrieved from an object with a member called *mom* via dot
 notation, the object will replace the environment part of the closure:
 
 	->x=10
