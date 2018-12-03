@@ -465,7 +465,7 @@ There is an operator to do this directly:
 
 	modified = original::new_environment
 
-When a closure is retrieved from an object with a member called mom via dot
+ALso, when a closure is retrieved from an object with a member called *mom* via dot
 notation, the object will replace the environment part of the closure:
 
 	->x=10
@@ -475,6 +475,8 @@ notation, the object will replace the environment part of the closure:
 	10
 	->a.p()
 	20
+
+This feature allows for object-oriented programming in Ivy.
 
 ### Symbols
 
