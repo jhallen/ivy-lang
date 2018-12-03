@@ -39,6 +39,23 @@ embedded into other programs.
 
 Ivy uses garbage collection for memory management.
 
+Here is a tiny example program:
+
+	fn fib(n) {
+		if n < 2 {
+			return n
+		} {
+			return fib(n - 1) + fib(n - 2)
+		}
+	}
+
+Or concisely:
+
+	fn fib(n) if(n < 2, n, fib(n - 2) + fib(n - 1))
+
+	->print fib(30)
+	832040
+
 ## Invocation
 
 	ivy [-u] [-t] [-c] [filenames...]
