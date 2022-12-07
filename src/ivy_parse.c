@@ -1341,6 +1341,6 @@ Ivy_node *ivy_compargs(Ivy *ivy, const char *buf)
 	}
 	
 	rtn = ivy_opt(parser->loc,rtn);
-	ivy_free_parser(parser);
+	//ivy_free_parser(parser); // Fixme: symbols are allocated in parser, we can't free here.
 	return rtn;
 }
