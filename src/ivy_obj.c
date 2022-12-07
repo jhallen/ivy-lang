@@ -337,7 +337,7 @@ void ivy_mark_protected_objs()
 		if (op == ivy_obj_protect_ptr) {
 			for (x = 0; x != ivy_obj_protect_idx; ++x)
 				ivy_mark_obj(op->list[x]);
-				break;
+			break;
 		} else
 			for (x = 0; x != IVY_OBJ_PROTECT_SIZE; ++x)
 				ivy_mark_obj(op->list[x]);

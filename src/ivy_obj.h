@@ -51,7 +51,7 @@ extern struct ivy_obj_protect {
 	Ivy_obj *list[IVY_OBJ_PROTECT_SIZE];
 } *ivy_obj_protect_list;
 
-struct ivy_obj_protect *ivy_obj_protect_ptr;
+extern struct ivy_obj_protect *ivy_obj_protect_ptr;
 extern int ivy_obj_protect_idx;
 
 static inline void ivy_clear_protected_objs()
